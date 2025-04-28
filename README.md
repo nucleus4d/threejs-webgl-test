@@ -28,3 +28,6 @@ upon scene set up, and it loads shader code etc. The `renderWebGLCube` is called
 The `cube.js` file is a placeholder for any custom webgl2 rendering pipeline or a module.
 
 _Note:_ We use the same `webgl2` context for both, our `THREE.js` scene and the raw WebGL2-based file.
+
+Screenshot:
+![Image](https://github.com/user-attachments/assets/6422800f-6259-46a3-b933-6c5980c5c534)
