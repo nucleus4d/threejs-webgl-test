@@ -3,7 +3,8 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { initWebGL, renderWebGLCube } from './cube';
+import { initWebGL as initWebGLCube, renderWebGLCube } from './cube';
+import { initWebGL as initWebGLSphere, renderWebGLSphere } from './sphere';
 
 export default function WebGLTest() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -13,7 +14,8 @@ export default function WebGLTest() {
     const sceneRef = useRef<THREE.Scene | null>(null);
     const controlsRef = useRef<OrbitControls | null>(null);
     const glRef = useRef<WebGL2RenderingContext | null>(null);
-    const cubeStateRef = useRef<ReturnType<typeof initWebGL> | null>(null);
+    const cubeStateRef = useRef<ReturnType<typeof initWebGLCube> | null>(null);
+    const sphereStateRef = useRef<ReturnType<typeof initWebGLSphere> | null>(null);
 
     useEffect(() => {
         if (!containerRef.current || !canvasRef.current) return;
@@ -112,12 +114,20 @@ export default function WebGLTest() {
         controlsRef.current = controls;
 
         // Initialize WebGL cube
-        const cubeState = initWebGL(gl, camera);
+        const cubeState = initWebGLCube(gl, camera);
         if (!cubeState) {
             console.error('Failed to initialize WebGL cube');
             return;
         }
         cubeStateRef.current = cubeState;
+
+        // Initialize WebGL sphere
+        const sphereState = initWebGLSphere(gl, camera);
+        if (!sphereState) {
+            console.error('Failed to initialize WebGL sphere');
+            return;
+        }
+        sphereStateRef.current = sphereState;
 
         // Animation loop
         function animate() {
@@ -136,6 +146,11 @@ export default function WebGLTest() {
             // Then render WebGL cube
             if (cubeStateRef.current && gl) {
                 renderWebGLCube(cubeStateRef.current, camera);
+            }
+
+            // Then render WebGL sphere
+            if (sphereStateRef.current && gl) {
+                renderWebGLSphere(sphereStateRef.current, camera);
             }
         }
         animate();
